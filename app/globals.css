@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --leaf-950: #0b140f;
+  --leaf-900: #122018;
+  --leaf-700: #1f3d2c;
+  --rind: #2f6b3a;
+  --rind-bright: #3f9a4e;
+  --flesh: #f28ca0;
+  --flesh-deep: #d45b78;
+  --pith: #f6f1e4;
+  --pith-muted: #b7b0a0;
+  --juice: #ffe08a;
+  --danger: #e85d5d;
+  --ok: #3f9a4e;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: #070807;
+  color: #f4f1e6;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: #f28ca0;
+  color: #0b140f;
+}
+
+.panel {
+  background: #121614;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+}
+
+.chip {
+  border: 1px solid #1f3d2c;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  color: #b7b0a0;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.chip[data-active="true"] {
+  background: #2f6b3a;
+  border-color: #3f9a4e;
+  color: #f6f1e4;
+}
+
+.grove-row {
+  transition: background 150ms ease;
+}
+
+.grove-row:hover {
+  background: rgba(47, 107, 58, 0.22);
+}
+
+.wallet-adapter-button {
+  background: #2f6b3a !important;
+  color: #f6f1e4 !important;
+  border-radius: 10px !important;
+  font-family: inherit !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  padding: 0 14px !important;
+  font-size: 13px !important;
+}
+
+.wallet-adapter-button:hover {
+  background: #3f9a4e !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  background: #122018 !important;
+}
+
+input[type="range"] {
+  accent-color: #f28ca0;
+}
+
+.progress-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #1f3d2c;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2f6b3a, #f28ca0);
+  transition: width 180ms ease;
+}

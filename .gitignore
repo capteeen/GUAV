@@ -1,0 +1,11 @@
+node_modules
+.next
+target
+.anchor
+test-ledger
+dist
+keys/*.json
+.env
+.env.local
+*.log
+.DS_Store
