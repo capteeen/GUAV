@@ -43,7 +43,7 @@ export function LaunchForm() {
 
   function onSubmit() {
     if (mode !== "tax") {
-      setStatus("0% mode is marked Soon. This demo launches the 1% Guava curve.");
+      setStatus("0% mode is soon. Launches use the 1% Guava curve.");
       return;
     }
     if (!ready) {
@@ -113,7 +113,7 @@ export function LaunchForm() {
               type="button"
               onClick={() => {
                 setMode("flat");
-                setStatus("0% mode is Soon. The demo launches on the Guava curve.");
+                setStatus("0% mode is soon. Launches use the 1% Guava curve.");
               }}
               className={`rounded-2xl border px-4 py-3 text-left ${mode === "flat" ? "border-white/30" : "border-white/10"}`}
             >
@@ -121,7 +121,7 @@ export function LaunchForm() {
                 <span className="grid h-4 w-4 place-items-center rounded-full border border-white/30" />
                 0% tax token
               </span>
-              <span className="mt-1 block pl-6 text-xs leading-relaxed text-[#8d887c]">Soon. A plain pool with a 0.5% fee. Not available in this demo.</span>
+              <span className="mt-1 block pl-6 text-xs leading-relaxed text-[#8d887c]">Soon. A plain pool with a 0.5% fee.</span>
             </button>
           </div>
 
@@ -158,7 +158,7 @@ export function LaunchForm() {
             </label>
           </Section>
 
-          <Section index="03" title="Pairing" hint="This demo pairs with SOL. The curve is Solana-native.">
+          <Section index="03" title="Pairing" hint="Pairs with SOL. The curve is Solana-native.">
             <div className="flex flex-wrap gap-2">
               {(["SOL", "USDC"] as const).map((item) => (
                 <button
@@ -171,7 +171,7 @@ export function LaunchForm() {
                 </button>
               ))}
             </div>
-            {quote === "USDC" ? <p className="text-xs text-[#ffe08a]">USDC is listed for the preview. Buys in this demo still settle in SOL.</p> : null}
+            {quote === "USDC" ? <p className="text-xs text-[#ffe08a]">Buys settle in SOL.</p> : null}
             <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#101412] px-4 py-3 text-sm">
               <span>Paired with {quote}</span>
               <span className="text-[#8d887c]">Solana</span>

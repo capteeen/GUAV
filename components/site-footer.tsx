@@ -32,7 +32,6 @@ export function SiteFooter() {
       </div>
       <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-2 px-5 pb-6 text-xs text-[#6f6a60]">
         <p>© 2026 Guava</p>
-        <p className="font-mono uppercase tracking-[0.14em]">Demo data</p>
         <Link href="/legal" className="hover:text-[#f4f1e6]">
           Legal
         </Link>

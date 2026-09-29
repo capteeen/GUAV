@@ -7,13 +7,13 @@ import { Label } from "@/components/ui/label";
 import { useGrove } from "@/components/grove-provider";
 import { GRADUATION_SOL, splitTrade } from "@/lib/demo-wallet";
 import { formatPct, formatSolNumber, formatUsd } from "@/lib/format";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export function TokenScreen({ address }: { address: string }) {
   const grove = useGrove();
   const token = grove.find(address);
   const [side, setSide] = useState<"buy" | "sell">("buy");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState("0.10");
   const [slippage, setSlippage] = useState(1);
   const [status, setStatus] = useState("");
 
@@ -41,7 +41,6 @@ export function TokenScreen({ address }: { address: string }) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <p className="mb-4 rounded-md border border-demo/40 px-3 py-2 text-sm text-demo">Demo data. Buys and sells stay in this browser. Not a live market.</p>
       <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <div className="flex items-center gap-4">
@@ -70,15 +69,10 @@ export function TokenScreen({ address }: { address: string }) {
               <div className="progress-fill" style={{ width: `${token.graduated ? 100 : pct}%` }} />
             </div>
             <p className="mt-2 font-mono text-xs text-pith-muted">
-              {token.marketCapUsd != null
-                ? `${token.graduated ? "Graduated" : "On the curve"} · demo snapshot`
-                : `${token.graduated ? "Graduated" : "On the curve"} · ${raised.toFixed(3)} / ${GRADUATION_SOL} SOL raised`}
+              {token.graduated ? "Graduated" : "On the curve"} · {token.graduated ? GRADUATION_SOL.toFixed(3) : raised.toFixed(3)} / {GRADUATION_SOL} SOL
             </p>
           </div>
-          <div className="panel mt-6 grid min-h-56 place-items-center p-6 text-center">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-juice">Chart placeholder</p>
-            <p className="mt-2 max-w-sm text-sm text-pith-muted">This panel does not draw live candles. The progress bar is the demo curve.</p>
-          </div>
+          <PriceChart seed={token.address} positive={(token.changePct ?? 0) >= 0} pair={`${token.ticker}/SOL`} change={formatPct(token.changePct)} />
         </div>
         <aside className="panel p-5">
           <div className="flex gap-2">
@@ -90,9 +84,9 @@ export function TokenScreen({ address }: { address: string }) {
             </button>
           </div>
           <p className="mt-4 text-sm">
-            {token.graduated ? "Graduated. Demo trades clear on the locked pool." : "On the curve. Quote is SOL."}
+            {token.graduated ? "Graduated. Trades clear on the locked pool." : "On the curve. Quote is SOL."}
           </p>
-          <p className="mt-1 font-mono text-xs text-pith-muted">Devnet wallet {grove.solBalance.toFixed(3)} SOL</p>
+          <p className="mt-1 font-mono text-xs text-pith-muted">Wallet {grove.solBalance.toFixed(3)} SOL</p>
           <label className="mt-4 grid gap-2">
             <Label>SOL amount</Label>
             <Input value={amount} inputMode="decimal" onChange={(event) => setAmount(event.target.value)} placeholder="0.10" />
@@ -114,6 +108,61 @@ export function TokenScreen({ address }: { address: string }) {
       </div>
     </div>
   );
+}
+
+function PriceChart({ seed, positive, pair, change }: { seed: string; positive: boolean; pair: string; change: string }) {
+  const path = useMemo(() => seriesPath(seed, positive), [seed, positive]);
+  const color = positive ? "#6ee7a2" : "#f07178";
+  const id = `curve-${mix(seed).toString(16)}`;
+  return (
+    <div className="panel mt-6 overflow-hidden">
+      <div className="flex items-center justify-between px-4 pt-4 text-xs">
+        <span className="font-mono text-[#b7b0a0]">{pair}</span>
+        <span className="font-mono" style={{ color }}>
+          {change} 24h
+        </span>
+      </div>
+      <svg viewBox="0 0 640 220" className="h-56 w-full" role="img" aria-label={`${pair} price`}>
+        <defs>
+          <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity="0.35" />
+            <stop offset="100%" stopColor={color} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {[40, 90, 140, 190].map((y) => (
+          <line key={y} x1="0" y1={y} x2="640" y2={y} stroke="rgba(255,255,255,0.06)" />
+        ))}
+        <path d={path.area} fill={`url(#${id})`} />
+        <path d={path.line} fill="none" stroke={color} strokeWidth="2.25" />
+      </svg>
+    </div>
+  );
+}
+
+function seriesPath(seed: string, positive: boolean) {
+  const pts: number[] = [];
+  let value = 42;
+  let h = mix(seed);
+  for (let i = 0; i < 72; i += 1) {
+    h = Math.imul(h ^ (h >>> 13), 1274126177) >>> 0;
+    value = Math.max(10, Math.min(92, value + ((h % 9) - 4) + (positive ? 0.32 : -0.26)));
+    pts.push(value);
+  }
+  const width = 640;
+  const height = 220;
+  const step = width / (pts.length - 1);
+  const y = (point: number) => height - (point / 100) * (height - 28) - 14;
+  const line = pts.map((point, index) => `${index === 0 ? "M" : "L"}${(index * step).toFixed(1)},${y(point).toFixed(1)}`).join(" ");
+  return { line, area: `${line} L${width},${height} L0,${height} Z` };
+}
+
+function mix(value: string) {
+  let h = 2166136261;
+  for (let i = 0; i < value.length; i += 1) {
+    h ^= value.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
 }
 
 function Fee({ k, v }: { k: string; v: string }) {

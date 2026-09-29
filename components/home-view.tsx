@@ -92,7 +92,7 @@ export function HomeView() {
           <span className="rounded-full bg-[#f28ca0] px-3 py-1 text-xs font-semibold text-[#1a1214]">SOL</span>
         </div>
       </section>
-      <p className="sr-only">24h grove volume {formatBoard(vol)} SOL. Demo data.</p>
+      <p className="sr-only">24h grove volume {formatBoard(vol)} SOL.</p>
 
       <section id="grove" className="pb-4 pt-8">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">

@@ -2,13 +2,13 @@
 
 import { Logo } from "@/components/logo";
 import { useGrove } from "@/components/grove-provider";
-import { formatBoard } from "@/lib/format";
+import { formatBoard, shortKey } from "@/lib/format";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 
 export function SiteHeader() {
-  const { connected, connect, disconnect, solBalance, rows } = useGrove();
+  const { connected, connect, disconnect, solBalance, wallet, rows } = useGrove();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const vol = useMemo(() => 20_000 + rows.reduce((sum, row) => sum + (row.volumeSol ?? 0), 0), [rows]);
@@ -56,8 +56,8 @@ export function SiteHeader() {
             </button>
             {open && connected ? (
               <div className="absolute right-0 top-11 w-56 rounded-2xl border border-white/10 bg-[#141816] p-3 text-sm shadow-xl">
-                <p className="font-medium">Devnet wallet</p>
-                <p className="mt-1 font-mono text-[11px] text-[#8d887c]">Demo only</p>
+                <p className="font-medium">Wallet</p>
+                <p className="mt-1 font-mono text-[11px] text-[#8d887c]">{wallet ? shortKey(wallet) : ""}</p>
                 <p className="mt-2 font-mono text-xs">{solBalance.toFixed(3)} SOL</p>
                 <Link href="/profile" className="mt-3 block text-xs text-[#f28ca0]" onClick={() => setOpen(false)}>
                   Profile

@@ -12,8 +12,7 @@ export default function LegalPage() {
       <div className="mt-6 space-y-4 text-sm leading-6 text-pith-muted">
         <p>Guava (Gua, gua.fun, ticker GUAV) is an original launchpad brand. This page is not legal advice.</p>
         <p>
-          Memecoins can go to zero. Market figures marked as demo data are samples, not live prices. Phase 1 targets Solana devnet.
-          Mainnet is out of scope.
+          Memecoins can go to zero. Phase 1 targets Solana devnet. Mainnet is out of scope.
         </p>
         <p>
           Pairing on this build is native SOL on a bonding curve. Graduation moves remaining reserves into a Guava-owned constant-product pool

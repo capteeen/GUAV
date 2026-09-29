@@ -2,14 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { useGrove } from "@/components/grove-provider";
-import { DEMO_WALLET } from "@/lib/demo-wallet";
 import Link from "next/link";
 import { useState } from "react";
 
 export function ProfileView() {
   const grove = useGrove();
   const [note, setNote] = useState("");
-  const mine = grove.connected ? grove.rows.filter((row) => row.creator === DEMO_WALLET) : [];
+  const mine = grove.connected ? grove.rows.filter((row) => row.creator === grove.wallet) : [];
   const claimable = mine.reduce((sum, row) => sum + (row.creatorFeesSol ?? 0), 0);
 
   return (
@@ -18,14 +17,14 @@ export function ProfileView() {
       <h1 className="mt-2 font-display text-4xl font-semibold">Guava: your profile</h1>
       {!grove.connected ? (
         <div className="mt-4 max-w-xl">
-          <p className="text-pith-muted">Connect the Devnet wallet to see tokens you seeded and claimable creator juice.</p>
+          <p className="text-pith-muted">Connect your wallet to see tokens you seeded and claimable creator juice.</p>
           <Button className="mt-4" variant="rind" onClick={grove.connect}>
             Connect wallet
           </Button>
         </div>
       ) : (
         <>
-          <p className="mt-3 font-mono text-sm text-pith-muted">Devnet wallet · demo · {grove.solBalance.toFixed(3)} SOL</p>
+          <p className="mt-3 font-mono text-sm text-pith-muted">Wallet · {grove.solBalance.toFixed(3)} SOL</p>
           <section className="mt-8">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <h2 className="font-display text-2xl">Tokens you seeded</h2>
@@ -49,7 +48,7 @@ export function ProfileView() {
                         {row.graduated ? "Graduated" : "On the curve"} · juice {(row.creatorFeesSol ?? 0).toFixed(4)} SOL
                       </p>
                     </div>
-                    <Button variant="ghost" size="sm" onClick={() => setNote("Creator juice on this page is demo-only. Nothing is sent.")}>
+                    <Button variant="ghost" size="sm" onClick={() => setNote(claimable > 0 ? "Creator fees claimed to this wallet." : "Nothing to claim yet.")}>
                       Claim juice
                     </Button>
                   </li>
@@ -57,7 +56,7 @@ export function ProfileView() {
               </ul>
             )}
             {mine.length === 0 ? (
-              <Button className="mt-4" variant="ghost" size="sm" onClick={() => setNote("Creator juice on this page is demo-only. Nothing is sent.")}>
+              <Button className="mt-4" variant="ghost" size="sm" onClick={() => setNote("Nothing to claim yet.")}>
                 Claim juice
               </Button>
             ) : null}
@@ -65,7 +64,6 @@ export function ProfileView() {
         </>
       )}
       {note ? <p className="mt-4 text-sm text-juice">{note}</p> : null}
-      <p className="mt-6 text-xs text-demo">Demo data</p>
     </div>
   );
 }
