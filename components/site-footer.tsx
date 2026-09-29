@@ -14,7 +14,7 @@ export function SiteFooter() {
           <Logo className="h-7 w-7" />
           <span className="font-medium">Guava</span>
           <span className="text-[#8d887c]">gua.fun</span>
-          <a href="https://x.com/guafun" target="_blank" rel="noreferrer" aria-label="Guava on X" className="text-[#b7b0a0] hover:text-[#f4f1e6]">
+          <a href="https://x.com/useguav" target="_blank" rel="noreferrer" aria-label="Guava on X" className="text-[#b7b0a0] hover:text-[#f4f1e6]">
             𝕏
           </a>
         </div>

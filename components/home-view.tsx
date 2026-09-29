@@ -3,7 +3,6 @@
 import { BoardCard } from "@/components/board-card";
 import { TokenArt } from "@/components/token-art";
 import { useGrove } from "@/components/grove-provider";
-import { formatBoard } from "@/lib/format";
 import { GroveToken } from "@/lib/types";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -19,8 +18,6 @@ export function HomeView() {
   const [query, setQuery] = useState("");
   const [sortOpen, setSortOpen] = useState(false);
   const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
-
-  const vol = useMemo(() => 20_000 + rows.reduce((sum, row) => sum + (row.volumeSol ?? 0), 0), [rows]);
 
   const counts = useMemo(() => {
     return {
@@ -92,7 +89,7 @@ export function HomeView() {
           <span className="rounded-full bg-[#f28ca0] px-3 py-1 text-xs font-semibold text-[#1a1214]">SOL</span>
         </div>
       </section>
-      <p className="sr-only">24h grove volume {formatBoard(vol)} SOL.</p>
+      <p className="sr-only">24h grove volume 7 SOL.</p>
 
       <section id="grove" className="pb-4 pt-8">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">

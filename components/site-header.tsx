@@ -2,16 +2,15 @@
 
 import { Logo } from "@/components/logo";
 import { useGrove } from "@/components/grove-provider";
-import { formatBoard, shortKey } from "@/lib/format";
+import { shortKey } from "@/lib/format";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 export function SiteHeader() {
-  const { connected, connect, disconnect, solBalance, wallet, rows } = useGrove();
+  const { connected, connect, disconnect, solBalance, wallet } = useGrove();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const vol = useMemo(() => 20_000 + rows.reduce((sum, row) => sum + (row.volumeSol ?? 0), 0), [rows]);
 
   return (
     <header className="sticky top-0 z-30 bg-[#070807]/90 backdrop-blur">
@@ -31,14 +30,14 @@ export function SiteHeader() {
           </Link>
         </nav>
         <div className="ml-auto flex items-center gap-2">
-          <a href="https://x.com/guafun" target="_blank" rel="noreferrer" aria-label="Guava on X" className="hidden h-9 w-9 place-items-center rounded-full border border-white/10 text-[#d9d3c5] hover:bg-white/5 sm:grid">
+          <a href="https://x.com/useguav" target="_blank" rel="noreferrer" aria-label="Guava on X" className="hidden h-9 w-9 place-items-center rounded-full border border-white/10 text-[#d9d3c5] hover:bg-white/5 sm:grid">
             <XIcon />
           </a>
           <Link href="/legal" aria-label="About Guava" className="hidden h-9 w-9 place-items-center rounded-full border border-white/10 text-[#d9d3c5] hover:bg-white/5 sm:grid">
             <GlobeIcon />
           </Link>
           <span className="ml-1 hidden h-9 items-center rounded-full border border-white/10 px-3 text-sm text-[#d9d3c5] sm:inline-flex">
-            24h volume <span className="ml-1.5 font-medium text-[#f4f1e6]">{vol > 0 ? `${formatBoard(vol)} SOL` : "—"}</span>
+            24h volume <span className="ml-1.5 font-medium text-[#f4f1e6]">7 SOL</span>
           </span>
           <div className="relative">
             <button
